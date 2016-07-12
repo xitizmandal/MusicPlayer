@@ -1,5 +1,7 @@
 package np.com.xitiz.music;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentUris;
 import android.content.Intent;
@@ -25,6 +27,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private int songPosition;
 
     private final IBinder MUSIC_BIND = new MusicBinder();
+
+    private String songTitle = "";
+    private static final int NOTIFY_ID = 1;
 
     public void onCreate(){
         super.onCreate();
@@ -71,6 +76,23 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void onPrepared(MediaPlayer mp) {
         mp.start();
 
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification.Builder builder = new Notification.Builder(this);
+
+        builder.setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.play)
+                .setTicker(songTitle)
+                .setOngoing(true)
+                .setContentTitle("Playing")
+                .setContentText(songTitle);
+
+        Notification notification = builder.build();
+
+        startForeground(NOTIFY_ID, notification);
     }
 
     @Override
@@ -86,6 +108,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void playSong(){
         mediaPlayer.reset();
         Song playSong = songsList.get(songPosition);
+        songTitle = playSong.getSongTitle();
         long currentSong = playSong.getSongId();
         Uri trackUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, currentSong);
 
@@ -102,4 +125,48 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         songPosition = songIndex;
     }
 
+    public int getSongPosition(){
+        return mediaPlayer.getCurrentPosition();
+    }
+
+    public int getSongDuration(){
+        return mediaPlayer.getDuration();
+    }
+
+    public boolean isPlaying(){
+        return mediaPlayer.isPlaying();
+    }
+
+    public void pausePlayer(){
+        mediaPlayer.pause();
+    }
+
+    public void seek(int position){
+        mediaPlayer.seekTo(position);
+    }
+
+    public void go(){
+        mediaPlayer.start();
+    }
+
+    public void playPrev(){
+        songPosition--;
+        if(songPosition == 0){
+            songPosition = songsList.size() - 1;
+        }
+        playSong();
+    }
+
+    public void playNext(){
+        songPosition++;
+        if(songPosition == songsList.size()){
+            songPosition = 0;
+        }
+        playSong();
+    }
+
+    @Override
+    public void onDestroy() {
+        stopForeground(true);
+    }
 }
