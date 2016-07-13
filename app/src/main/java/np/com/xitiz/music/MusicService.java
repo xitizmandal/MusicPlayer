@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by xitiz on 7/12/16.
@@ -31,9 +32,13 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private String songTitle = "";
     private static final int NOTIFY_ID = 1;
 
+    private boolean shuffle = false;
+    private Random random;
+
     public void onCreate(){
         super.onCreate();
         songPosition = 0;
+        random = new Random();
         mediaPlayer = new MediaPlayer();
         initMusicPlayer();
     }
@@ -49,6 +54,14 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     public void setList(ArrayList<Song> songsList){
         this.songsList = songsList;
+    }
+
+    public void setShuffle(){
+        if (shuffle){
+            shuffle = false;
+        } else {
+            shuffle =  true;
+        }
     }
 
     /**
@@ -158,11 +171,20 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     public void playNext(){
-        songPosition++;
-        if(songPosition == songsList.size()){
-            songPosition = 0;
+        if(shuffle){
+            int newSong = songPosition;
+            while (newSong == songPosition){
+                newSong = random.nextInt(songsList.size());
+            }
+            songPosition = newSong;
+        } else {
+            songPosition++;
+            if (songPosition == songsList.size()) {
+                songPosition = 0;
+            }
         }
         playSong();
+
     }
 
     @Override

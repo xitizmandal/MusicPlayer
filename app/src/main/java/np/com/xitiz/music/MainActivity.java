@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
                 break;
 
             case R.id.action_shuffle:
+                musicService.setShuffle();
                 Toast.makeText(getApplicationContext(),"Shuffle",Toast.LENGTH_SHORT).show();
                 break;
         }
