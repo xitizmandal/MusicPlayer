@@ -67,7 +67,7 @@ public class SongAdapter extends BaseAdapter {
         durationInMS = durationInMS - (mins * 60000);
         secs = durationInMS / 1000;
 
-        if (hour != 0){
+        if (hour > 0){
             return (hour + ":" + mins + ":" + secs);
         } else {
             return (mins + ":" + secs);
