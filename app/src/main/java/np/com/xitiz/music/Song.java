@@ -8,12 +8,14 @@ public class Song {
     private String songTitle;
     private String songArtist;
     private int songDuration;
+    private long albumID;
 
-    public Song(long songId, String songTitle, String songArtist, int songDuration){
+    public Song(long songId, String songTitle, String songArtist, int songDuration, long albumId){
         this.songId = songId;
         this.songTitle = songTitle;
         this.songArtist = songArtist;
         this.songDuration = songDuration;
+        this.albumID = albumId;
     }
 
     public long getSongId(){
@@ -28,8 +30,12 @@ public class Song {
         return songArtist;
     }
 
-    public int getSongDuration(){
+    public int getSongDuration() {
         return songDuration;
+    }
+
+    public long getAlbumID() {
+        return albumID;
     }
 
 }

@@ -1,11 +1,21 @@
 package np.com.xitiz.music;
 
+import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -15,16 +25,26 @@ import java.util.ArrayList;
 public class RecycleSongAdapter extends RecyclerView.Adapter<RecycleSongAdapter.MyViewHolder> {
     private ArrayList<Song> songList;
     private Context context;
+    public MyClicks myClicks;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView songTitle, songArtist, songDuration;
+        public ImageView albumArt;
 
-        public MyViewHolder(View view){
+        public MyViewHolder(View view, MyClicks listner){
             super(view);
             context = view.getContext();
+            myClicks = listner;
+            albumArt = (ImageView) view.findViewById(R.id.image);
             songTitle = (TextView) view.findViewById(R.id.song_title);
             songArtist = (TextView) view.findViewById(R.id.song_artist);
             songDuration = (TextView) view.findViewById(R.id.song_duration);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            myClicks.clickOnRow(v, getLayoutPosition());
         }
     }
 
@@ -32,19 +52,51 @@ public class RecycleSongAdapter extends RecyclerView.Adapter<RecycleSongAdapter.
         this.songList = songList;
     }
 
+    public static interface MyClicks{
+        public void clickOnRow(View info, int position);
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.song, parent, false);
+        final View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.song_layout_2, parent, false);
 
-        MyViewHolder myViewHolder = new MyViewHolder(itemView);
+        MyViewHolder myViewHolder = new MyViewHolder(itemView, new RecycleSongAdapter.MyClicks() {
 
+            //Clicks for interaction.
+            public void clickOnRow(View info, int position) {
+                Toast.makeText(context, "row "+ position + " clicked", Toast.LENGTH_SHORT).show();
+                Log.d("Movie Adapter", "The Second click also works");
+                itemView.setTag(position);
+
+                //Calling the songPicked function in the MainActivity to play the song.
+                try{
+                    ((MainActivity) info.getContext()).songPicked(itemView);
+                } catch (Exception e){
+
+                }
+
+
+            }
+        });
         return myViewHolder;
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Song song = songList.get(position);
+        final Uri ART_CONTENT_URI = Uri.parse("content://media/external/audio/albumart");
+        Uri albumArtUri = ContentUris.withAppendedId(ART_CONTENT_URI, song.getAlbumID());
+
+        Bitmap bitmap = null;
+        try{
+            bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), albumArtUri);
+        } catch (Exception e){
+            Log.d("BITMAP","Album art at " +position+ " not found");
+            bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.album);
+        }
+
+        holder.albumArt.setImageBitmap(bitmap);
         holder.songTitle.setText(song.getSongTitle());
         holder.songArtist.setText(song.getSongArtist());
         holder.songDuration.setText(convertDuration(song.getSongDuration()));

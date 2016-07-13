@@ -9,14 +9,15 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycle_list"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:layout_marginBottom="10dp"
-        android:background="@color/recycleviewColor"></android.support.v7.widget.RecyclerView>
+        android:background="@color/recycleViewColor"></android.support.v7.widget.RecyclerView>
 
     <ListView
         android:id="@+id/song_list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@color/listViewColor">
     </ListView>
 
 </LinearLayout>
