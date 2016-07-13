@@ -11,6 +11,9 @@ import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,11 +38,16 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
     private boolean paused = false, playbackPaused = false;
 
+    private RecyclerView recyclerView;
+    private RecycleSongAdapter mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycle_list);
 
         songView = (ListView) findViewById(R.id.song_list);
 
@@ -56,6 +64,12 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         SongAdapter songAdapter = new SongAdapter(this, songList);
         songView.setAdapter(songAdapter);
         setMusicController();
+
+        mAdapter = new RecycleSongAdapter(songList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
 
     }
 
