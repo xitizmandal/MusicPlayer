@@ -42,12 +42,36 @@ public class SongAdapter extends BaseAdapter {
         LinearLayout songLayout = (LinearLayout) songInf.inflate(R.layout.song, parent, false);
         TextView songTitleView = (TextView) songLayout.findViewById(R.id.song_title);
         TextView songArtistView = (TextView) songLayout.findViewById(R.id.song_artist);
+        TextView songDurationView = (TextView) songLayout.findViewById(R.id.song_duration);
 
+        //TODO layout
         Song currentSong = songsList.get(position);
         songTitleView.setText(currentSong.getSongTitle());
         songArtistView.setText(currentSong.getSongArtist());
+        songDurationView.setText(convertDuration(currentSong.getSongDuration()));
 
         songLayout.setTag(position);
         return songLayout;
+    }
+
+    //Convert song Duration to hh:mm:ss
+    public String convertDuration(int durationInMS){
+        String out = null;
+        int hour;
+        int mins;
+        int secs;
+
+        hour = durationInMS / 3600000;
+        durationInMS = durationInMS - (hour * 3600000);
+        mins = durationInMS / 60000;
+        durationInMS = durationInMS - (mins * 60000);
+        secs = durationInMS / 1000;
+
+        if (hour != 0){
+            return (hour + ":" + mins + ":" + secs);
+        } else {
+            return (mins + ":" + secs);
+        }
+
     }
 }

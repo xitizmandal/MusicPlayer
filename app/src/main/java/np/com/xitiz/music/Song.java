@@ -7,11 +7,13 @@ public class Song {
     private long songId;
     private String songTitle;
     private String songArtist;
+    private int songDuration;
 
-    public Song(long songId, String songTitle, String songArtist){
+    public Song(long songId, String songTitle, String songArtist, int songDuration){
         this.songId = songId;
         this.songTitle = songTitle;
         this.songArtist = songArtist;
+        this.songDuration = songDuration;
     }
 
     public long getSongId(){
@@ -24,6 +26,10 @@ public class Song {
 
     public String getSongArtist(){
         return songArtist;
+    }
+
+    public int getSongDuration(){
+        return songDuration;
     }
 
 }

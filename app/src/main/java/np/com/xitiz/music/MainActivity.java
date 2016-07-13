@@ -118,12 +118,16 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
             int titleColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
             int idColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media._ID);
             int artistColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
+            int durationColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
             //add songs to list
+
+            //TODO add song list
             do {
                 long thisId = musicCursor.getLong(idColumn);
                 String thisTitle = musicCursor.getString(titleColumn);
                 String thisArtist = musicCursor.getString(artistColumn);
-                songList.add(new Song(thisId, thisTitle, thisArtist));
+                int thisDuration = musicCursor.getInt(durationColumn);
+                songList.add(new Song(thisId, thisTitle, thisArtist, thisDuration));
             }
             while (musicCursor.moveToNext());
         }
