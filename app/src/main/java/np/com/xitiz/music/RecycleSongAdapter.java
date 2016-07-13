@@ -65,8 +65,6 @@ public class RecycleSongAdapter extends RecyclerView.Adapter<RecycleSongAdapter.
 
             //Clicks for interaction.
             public void clickOnRow(View info, int position) {
-                Toast.makeText(context, "row "+ position + " clicked", Toast.LENGTH_SHORT).show();
-                Log.d("Movie Adapter", "The Second click also works");
                 itemView.setTag(position);
 
                 //Calling the songPicked function in the MainActivity to play the song.

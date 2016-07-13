@@ -56,12 +56,13 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         this.songsList = songsList;
     }
 
-    public void setShuffle(){
+    public boolean setShuffle(){
         if (shuffle){
             shuffle = false;
         } else {
             shuffle =  true;
         }
+        return shuffle;
     }
 
     /**

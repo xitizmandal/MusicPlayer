@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.about:
-                Toast.makeText(getApplicationContext(),"Music Player",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Kshitiz Music Player",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.exit:
                 stopService(playIntent);
@@ -164,8 +164,15 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
                 break;
 
             case R.id.action_shuffle:
-                musicService.setShuffle();
-                Toast.makeText(getApplicationContext(),"Shuffle",Toast.LENGTH_SHORT).show();
+                boolean shuffleOn;
+                String display;
+                shuffleOn = musicService.setShuffle();
+                if(shuffleOn){
+                    display = "on";
+                } else {
+                    display = "off";
+                }
+                Toast.makeText(getApplicationContext(),"Shuffle " + display ,Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
