@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
     android:onClick="songPicked"
     android:orientation="vertical"
-    android:padding="5dp" >
+    android:padding="5dp"
+    android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/song_title"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF99"
+        android:textColor="#000000"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:text = "Title"/>
 
     <TextView
         android:id="@+id/song_artist"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF99"
-        android:textSize="18sp" />
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:layout_below="@+id/song_title"
+        android:text="artist"/>
 
     <TextView
         android:id="@+id/song_duration"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF99"
-        android:textSize="18sp" />
-</LinearLayout>
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/song_title"
+        android:text="duration"/>
+</RelativeLayout>
