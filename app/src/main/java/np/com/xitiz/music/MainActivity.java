@@ -28,7 +28,6 @@ import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity implements MediaController.MediaPlayerControl{
     private ArrayList<Song> songList;
-    private ListView songView;
 
     private MusicService musicService;
     private Intent playIntent;
@@ -49,8 +48,6 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
         recyclerView = (RecyclerView) findViewById(R.id.recycle_list);
 
-        songView = (ListView) findViewById(R.id.song_list);
-
         songList = new ArrayList<Song>();
         getSongList();
 
@@ -62,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         });
 
         SongAdapter songAdapter = new SongAdapter(this, songList);
-        songView.setAdapter(songAdapter);
         setMusicController();
 
         mAdapter = new RecycleSongAdapter(songList);
@@ -192,11 +188,6 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         musicController.show(0);
     }
 
-    public void songSelected(){
-
-    }
-
-
     @Override
     public void start() {
         musicService.go();
@@ -280,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         });
 
         musicController.setMediaPlayer(this);
-        musicController.setAnchorView(findViewById(R.id.song_list));
+        musicController.setAnchorView(findViewById(R.id.recycle_list));
         musicController.setEnabled(true);
     }
 
