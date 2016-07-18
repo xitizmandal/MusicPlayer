@@ -9,13 +9,15 @@ public class Song {
     private String songArtist;
     private int songDuration;
     private long albumID;
+    private String albumName;
 
-    public Song(long songId, String songTitle, String songArtist, int songDuration, long albumId){
+    public Song(long songId, String songTitle, String songArtist, int songDuration, long albumId, String albumName){
         this.songId = songId;
         this.songTitle = songTitle;
         this.songArtist = songArtist;
         this.songDuration = songDuration;
         this.albumID = albumId;
+        this.albumName = albumName;
     }
 
     public long getSongId(){
@@ -36,6 +38,10 @@ public class Song {
 
     public long getAlbumID() {
         return albumID;
+    }
+
+    public String getAlbumName(){
+        return albumName;
     }
 
 }

@@ -28,7 +28,7 @@ public class RecycleSongAdapter extends RecyclerView.Adapter<RecycleSongAdapter.
     public MyClicks myClicks;
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView songTitle, songArtist, songDuration;
+        public TextView songTitle, songArtist, songDuration, albumName;
         public ImageView albumArt;
 
         public MyViewHolder(View view, MyClicks listner){
@@ -39,6 +39,7 @@ public class RecycleSongAdapter extends RecyclerView.Adapter<RecycleSongAdapter.
             songTitle = (TextView) view.findViewById(R.id.song_title);
             songArtist = (TextView) view.findViewById(R.id.song_artist);
             songDuration = (TextView) view.findViewById(R.id.song_duration);
+            albumName = (TextView) view.findViewById(R.id.song_albumName);
             view.setOnClickListener(this);
         }
 
@@ -94,10 +95,12 @@ public class RecycleSongAdapter extends RecyclerView.Adapter<RecycleSongAdapter.
             bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.album);
         }
 
+        //TODO add contents
         holder.albumArt.setImageBitmap(bitmap);
         holder.songTitle.setText(song.getSongTitle());
         holder.songArtist.setText(song.getSongArtist());
         holder.songDuration.setText(convertDuration(song.getSongDuration()));
+        holder.albumName.setText(song.getAlbumName());
     }
 
     @Override

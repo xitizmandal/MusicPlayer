@@ -118,6 +118,9 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         super.onStop();
     }
 
+    /**
+     * Get the song list present in device.
+     * */
     public void getSongList(){
         ContentResolver musicResolver = getContentResolver();
         Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -130,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
             int artistColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
             int durationColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
             int albumIDColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
+            int albumNameColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM);
             //add songs to list
 
             //TODO add song list
@@ -139,7 +143,8 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
                 String thisArtist = musicCursor.getString(artistColumn);
                 int thisDuration = musicCursor.getInt(durationColumn);
                 long thisAlbumId = musicCursor.getInt(albumIDColumn);
-                songList.add(new Song(thisId, thisTitle, thisArtist, thisDuration, thisAlbumId));
+                String thisAlbumName = musicCursor.getString(albumNameColumn);
+                songList.add(new Song(thisId, thisTitle, thisArtist, thisDuration, thisAlbumId, thisAlbumName));
             }
 
         }

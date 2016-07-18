@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,6 +31,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private final IBinder MUSIC_BIND = new MusicBinder();
 
     private String songTitle = "";
+    private String songArtist = "";
+    private String songAlbumName;
     private static final int NOTIFY_ID = 1;
 
     private boolean shuffle = false;
@@ -86,6 +89,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         return false;
     }
 
+
     @Override
     public void onPrepared(MediaPlayer mp) {
         mp.start();
@@ -95,14 +99,26 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
+        /**
+         * Notification builder builds the notification that is seen in the notification area.
+         * */
         Notification.Builder builder = new Notification.Builder(this);
 
         builder.setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.play)
-                .setTicker(songTitle)
-                .setOngoing(true)
-                .setContentTitle("Playing")
-                .setContentText(songTitle);
+                .setSmallIcon(R.drawable.album_white)
+                .setTicker(songTitle);
+//                .setOngoing(true)
+//                .setContentTitle(songTitle)
+//                .setContentText(songArtist);
+
+        RemoteViews remoteViews = new RemoteViews(getPackageName() , R.layout.custom_notification);
+
+        remoteViews.setImageViewResource(R.id.image , R.drawable.album);
+        remoteViews.setTextViewText(R.id.song_title , songTitle);
+        remoteViews.setTextViewText(R.id.song_artist, songArtist);
+        remoteViews.setTextViewText(R.id.song_albumName, songAlbumName);
+
+        builder.setContent(remoteViews);
 
         Notification notification = builder.build();
 
@@ -119,10 +135,13 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         return false;
     }
 
+    //TODO add contents
     public void playSong(){
         mediaPlayer.reset();
         Song playSong = songsList.get(songPosition);
         songTitle = playSong.getSongTitle();
+        songArtist = playSong.getSongArtist();
+        songAlbumName = playSong.getAlbumName();
         long currentSong = playSong.getSongId();
         Uri trackUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, currentSong);
 

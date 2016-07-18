@@ -43,12 +43,14 @@ public class SongAdapter extends BaseAdapter {
         TextView songTitleView = (TextView) songLayout.findViewById(R.id.song_title);
         TextView songArtistView = (TextView) songLayout.findViewById(R.id.song_artist);
         TextView songDurationView = (TextView) songLayout.findViewById(R.id.song_duration);
+        TextView songAlbumName = (TextView) songLayout.findViewById(R.id.song_albumName);
 
         //TODO layout
         Song currentSong = songsList.get(position);
         songTitleView.setText(currentSong.getSongTitle());
         songArtistView.setText(currentSong.getSongArtist());
         songDurationView.setText(convertDuration(currentSong.getSongDuration()));
+        songAlbumName.setText(currentSong.getAlbumName());
 
         songLayout.setTag(position);
         return songLayout;
