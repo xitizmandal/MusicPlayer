@@ -63,7 +63,11 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
         mAdapter = new RecycleSongAdapter(songList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+//        RecyclerView.LayoutManager mLayoutManager = new CustomLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
+//        recyclerView.smoothScrollToPosition(50);
+        FastScroller fastScroller = (FastScroller) findViewById(R.id.fastscroller);
+        fastScroller.setRecyclerView(recyclerView);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 

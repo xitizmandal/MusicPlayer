@@ -2,4 +2,10 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fastscroller_handle_corner">4dp</dimen>
+    <dimen name="fastscroller_handle_size">20dp</dimen>
+    <dimen name="fastscroller_track_height">16dp</dimen>
+    <dimen name="fastscroller_reack_corner">2dp</dimen>
+    <dimen name="fastscroller_track_width">4dp</dimen>
+    <dimen name="fastscroller_track_padding">4dp</dimen>
 </resources>
