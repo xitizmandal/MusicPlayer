@@ -109,6 +109,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
+
+
+
         /**
          * Notification builder builds the notification that is seen in the notification area.
          * */
@@ -120,15 +123,12 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         Bitmap bitmap = null;
         try{
             bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), albumArtUri);
-        } catch (IOException e)
-        {
+        } catch (Exception e){
             bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.album);
         }
 
-
-
         builder.setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.album_white)
+                .setSmallIcon(R.drawable.tunes)
 //                .setLargeIcon(bitmap)
                 .setTicker(songTitle)
                 .setOngoing(true);
@@ -137,11 +137,16 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
         RemoteViews remoteViews = new RemoteViews(getPackageName() , R.layout.notification);
 //        remoteViews.setImageViewResource(R.id.image , R.drawable.album);
-        remoteViews.setImageViewUri(R.id.imageViewAlbumArt, albumArtUri);
-//        remoteViews.setImageViewBitmap(R.id.imageViewAlbumArt, bitmap);
+//        remoteViews.setImageViewUri(R.id.imageViewAlbumArt, albumArtUri);
+        remoteViews.setImageViewBitmap(R.id.imageViewAlbumArt, bitmap);
         remoteViews.setTextViewText(R.id.song_title , songTitle);
         remoteViews.setTextViewText(R.id.song_artist, songArtist);
         builder.setContent(remoteViews);
+
+/*        Intent playPauseIntent = new Intent(this,MainActivity.class);
+        playPauseIntent.putExtra("DO","playPause");
+        PendingIntent pendingPlayPause = PendingIntent.getActivity(this,0, playPauseIntent, 0);
+        remoteViews.setOnClickPendingIntent(R.id.btnPause, pendingPlayPause);*/
 
         Notification notification = builder.build();
         notification.bigContentView = remoteViews;

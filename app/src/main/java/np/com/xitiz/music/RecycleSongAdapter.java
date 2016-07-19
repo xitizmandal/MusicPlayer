@@ -92,10 +92,18 @@ public class RecycleSongAdapter extends RecyclerView.Adapter<RecycleSongAdapter.
             bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), albumArtUri);
         } catch (Exception e){
             Log.d("BITMAP","Album art at " +position+ " not found");
-            bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.album);
+            bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.album_white);
         }
 
         //TODO add contents
+//        holder.albumArt.setImageBitmap(bitmap);
+        /*if (albumArtUri == null){
+            holder.albumArt.setImageResource(R.drawable.album_white);
+        } else {
+            Log.d("BITMAP","Album art at " +position+ " is " + albumArtUri.toString());
+            holder.albumArt.setImageURI(null);
+            holder.albumArt.setImageURI(albumArtUri);
+        }*/
         holder.albumArt.setImageBitmap(bitmap);
         holder.songTitle.setText(song.getSongTitle());
         holder.songArtist.setText(song.getSongArtist());
