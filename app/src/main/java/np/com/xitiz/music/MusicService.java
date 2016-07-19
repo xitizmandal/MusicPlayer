@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -12,9 +14,11 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.provider.MediaStore;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -30,9 +34,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     private final IBinder MUSIC_BIND = new MusicBinder();
 
-    private String songTitle = "";
-    private String songArtist = "";
+    private String songTitle;
+    private String songArtist;
     private String songAlbumName;
+    private long songAlbumID;
     private static final int NOTIFY_ID = 1;
 
     private boolean shuffle = false;
@@ -93,7 +98,12 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     @Override
     public void onPrepared(MediaPlayer mp) {
         mp.start();
+        createNotification();
 
+
+    }
+
+    public void createNotification(){
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent,
@@ -104,23 +114,37 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
          * */
         Notification.Builder builder = new Notification.Builder(this);
 
+        final Uri ART_CONTENT_URI = Uri.parse("content://media/external/audio/albumart");
+        Uri albumArtUri = ContentUris.withAppendedId(ART_CONTENT_URI, songAlbumID);
+
+        Bitmap bitmap = null;
+        try{
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), albumArtUri);
+        } catch (IOException e)
+        {
+            bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.album);
+        }
+
+
+
         builder.setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.album_white)
-                .setTicker(songTitle);
-//                .setOngoing(true)
+//                .setLargeIcon(bitmap)
+                .setTicker(songTitle)
+                .setOngoing(true);
 //                .setContentTitle(songTitle)
 //                .setContentText(songArtist);
 
-        RemoteViews remoteViews = new RemoteViews(getPackageName() , R.layout.custom_notification);
-
-        remoteViews.setImageViewResource(R.id.image , R.drawable.album);
+        RemoteViews remoteViews = new RemoteViews(getPackageName() , R.layout.notification);
+//        remoteViews.setImageViewResource(R.id.image , R.drawable.album);
+        remoteViews.setImageViewUri(R.id.imageViewAlbumArt, albumArtUri);
+//        remoteViews.setImageViewBitmap(R.id.imageViewAlbumArt, bitmap);
         remoteViews.setTextViewText(R.id.song_title , songTitle);
         remoteViews.setTextViewText(R.id.song_artist, songArtist);
-        remoteViews.setTextViewText(R.id.song_albumName, songAlbumName);
-
         builder.setContent(remoteViews);
 
         Notification notification = builder.build();
+        notification.bigContentView = remoteViews;
 
         startForeground(NOTIFY_ID, notification);
     }
@@ -142,6 +166,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         songTitle = playSong.getSongTitle();
         songArtist = playSong.getSongArtist();
         songAlbumName = playSong.getAlbumName();
+        songAlbumID = playSong.getAlbumID();
         long currentSong = playSong.getSongId();
         Uri trackUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, currentSong);
 
