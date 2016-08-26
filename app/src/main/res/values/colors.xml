@@ -6,6 +6,7 @@
     <color name="text">#FFFFFF</color>
     <color name="colorAccent">#FF5722</color>
     <color name = "primaryText">#ffffff</color>
+    <color name="primaryTextDark">#000</color>
     <color name = "secondaryText">#727272</color>
     <color name="backgroundColor">#3d3c3c</color>
     <color name="recycleViewColor">#72b3d4</color>

@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+>
+
+    <np.com.xitiz.music.CustomImageView
+        android:id="@+id/imageViewOne"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentBottom="true">
+
+        <ImageButton
+            android:id="@+id/btnPrev"
+            android:layout_width="@dimen/skip_next"
+            android:layout_height="@dimen/skip_next"
+            android:src="@drawable/skip_previous"
+            android:layout_gravity="center_vertical"/>
+
+        <ImageButton
+            android:id="@+id/btnPlayPause"
+            android:layout_width="@dimen/play_pause"
+            android:layout_height="@dimen/play_pause"
+            android:src="@drawable/play"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"/>
+
+        <ImageButton
+            android:id="@+id/btnNext"
+            android:layout_width="@dimen/skip_next"
+            android:layout_height="@dimen/skip_next"
+            android:src="@drawable/skip_next"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+</RelativeLayout>

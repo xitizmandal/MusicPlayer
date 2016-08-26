@@ -1,23 +1,35 @@
 package np.com.xitiz.music;
 
+import android.Manifest;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.Toast;
@@ -39,6 +51,11 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
 
     private RecyclerView recyclerView;
     private RecycleSongAdapter mAdapter;
+    private LinearLayout mMainLayout;
+
+    private static final String TAG = "Kshitiz Music APP";
+
+    private int oldColor;
 
 
     @Override
@@ -46,7 +63,10 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        isStoragePermissionGranted();
         recyclerView = (RecyclerView) findViewById(R.id.recycle_list);
+        mMainLayout = (LinearLayout) findViewById(R.id.main_layout);
+        oldColor = Color.WHITE;
 
         songList = new ArrayList<Song>();
         getSongList();
@@ -58,13 +78,15 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
             }
         });
 
-        SongAdapter songAdapter = new SongAdapter(this, songList);
+        //For listView
+        // SongAdapter songAdapter = new SongAdapter(this, songList);
         setMusicController();
 
-        mAdapter = new RecycleSongAdapter(songList);
+        mAdapter = new RecycleSongAdapter(songList,this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         recyclerView.setAdapter(mAdapter);
 
     }
@@ -306,5 +328,49 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
             playbackPaused=false;
         }
         musicController.show(0);
+    }
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG,"Permission is granted");
+                return true;
+            } else {
+
+                Log.v(TAG,"Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG,"Permission is granted");
+            return true;
+        }
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
+            //resume tasks needing this permission
+        }
+    }
+
+    public void backgroundTransistion(int newColor){
+        View v = findViewById(R.id.main_layout);
+        ObjectAnimator anim = ObjectAnimator.ofInt(v, "backgroundColor", oldColor, newColor);
+        anim.setEvaluator(new ArgbEvaluator());
+        anim.setRepeatCount(0);
+        anim.setRepeatMode(ValueAnimator.REVERSE);
+        anim.setDuration(2000);
+        anim.start();
+
+//        Toast.makeText(this,oldColor,Toast.LENGTH_SHORT).show();
+        oldColor = newColor;
+
     }
 }

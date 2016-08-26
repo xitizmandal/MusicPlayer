@@ -1,6 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/albumArtImage"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/album_art_area"
+        android:src="@drawable/album"/>
+
+
+    <TextView
+        android:id="@+id/songName"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/artist_name"
+        android:text="Song Name"
+        android:textSize="24dp"
+        android:textColor="@color/primaryTextDark"
+        android:gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="Artist Name"
+        android:textSize="18dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/secondaryText"/>
+
+    
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/songSeekBar"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_marginTop="16dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp">
+
+        <ImageButton
+            android:id="@+id/btnPrev"
+            android:layout_width="@dimen/skip_next"
+            android:layout_height="@dimen/skip_next"
+            android:src="@drawable/skip_previous"
+            android:layout_gravity="center_vertical"/>
+
+        <ImageButton
+            android:id="@+id/btnPlayPause"
+            android:layout_width="@dimen/play_pause"
+            android:layout_height="@dimen/play_pause"
+            android:src="@drawable/play"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"/>
+
+        <ImageButton
+            android:id="@+id/btnNext"
+            android:layout_width="@dimen/skip_next"
+            android:layout_height="@dimen/skip_next"
+            android:src="@drawable/skip_next"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>
